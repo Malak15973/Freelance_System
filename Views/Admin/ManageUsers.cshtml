@@ -1,0 +1,107 @@
+﻿@model IQueryable<ManageUserVM>
+@{
+    ViewBag.Title = "ManageUsers";
+}
+
+<!-- Start Users Table -->
+<section class="posts_table">
+    <div class="container">
+        <div class="row">
+            <form action="" class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon3">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="19"
+                             height="19"
+                             viewBox="0 0 19 19">
+                            <path id="Path_1"
+                                  data-name="Path 1"
+                                  d="M18.768,17.651l-5.4-5.4a7.535,7.535,0,1,0-1.119,1.119l5.4,5.4a.792.792,0,1,0,1.119-1.119ZM7.521,13.461a5.937,5.937,0,1,1,5.937-5.937A5.944,5.944,0,0,1,7.521,13.461Z"
+                                  transform="translate(0 -0.003)"
+                                  fill="#65735b" />
+                        </svg>
+                    </span>
+                    <input type="search"
+                           class="form-control rounded-end me-2"
+                           placeholder="Search" />
+                </div>
+            </form>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">User email</th>
+                    <th scope="col">User number</th>
+                    <th scope="col">User Role</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+                    foreach (var user in Model)
+                    {
+
+                        <tr class="p-5">
+                            <th scope="row">@user.Name</th>
+                            <td>@user.Email</td>
+                            <td>@user.Number</td>
+                            <td>@ViewBag.Roles[i]</td>
+
+                            <td>
+                                <a asp-controller="Admin" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-outline-dark me-2 rounded-pill ps-4 pe-4">
+                                    Edit
+                                </a>
+                                <a asp-controller="Admin" asp-action="Delete" asp-route-id="@user.Id" class="btn btn-outline-dark rounded-pill ps-4 pe-4">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>
+<!-- End Users Table -->
+@section Scripts {
+<script>
+    $(function () {
+        $("input[type=search]").on("keyup", function () {
+            var input = $("input[type=search]").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/GetUsersBySearch",
+                    data: { searchKey: input },
+                    success: function (res) {
+                        $("tbody").empty();
+                        $.each(res, function (i, e) {
+                            console.log(e);
+                            $("tbody").append(
+                                "<tr class='p-5'>" +
+                                "<th scope='row'>" + e.name + "</th> \n" +
+                                "<td>" + e.email + "</td>" +
+                                "<td>" + e.number + "</td> \n" +
+                                "<td>" + e.roleName + "</td> \n" +
+                                "<td> \n" +
+                                "<a  href=/Admin/Edit/" + e.id + " class='btn btn-outline-dark rounded-pill ps-4 pe-4'> Edit </a> \n" +
+                                "<a  href=/Admin/Delete/" + e.id + " class='btn btn-outline-dark rounded-pill ps-4 pe-4'> Delete </a> \n" +
+                                "</td> \n" +
+                                "</tr>"
+                            );
+
+                        });
+
+                    }
+
+                });
+
+
+        });
+    });
+</script>
+}
+     

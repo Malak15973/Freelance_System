@@ -1,0 +1,66 @@
+﻿@model IQueryable<PostVM>
+@inject IProposalRepository proposalRepo
+@inject ICategoryRepository category
+@{
+    ViewBag.Title = "SavedPosts";
+}
+
+
+<!-- Start Posts -->
+
+<section class="freelance_posts">
+    <div class="container">
+        <div class="row">
+        </div>
+
+        <div class="posts_feed">
+            <div class="row">
+                <h3 class="h1 posts_feed--main-title mt-4 mb-5">Saved Posts</h3>
+
+                @foreach (var post in Model)
+                {
+                    <div class="posts_feed--post card">
+                        <div class="card-body">
+                            <div class="posts_feed--saving float-end">
+                                <a asp-controller="Freelancer" asp-action="DeleteSavedPost" asp-route-id="@post.Id">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="16.617"
+                                         height="22.023"
+                                         viewBox="0 0 16.617 22.023">
+                                        <path id="bookmark_filled"
+                                              d="M40.754,0H27.976a1.952,1.952,0,0,0-1.954,1.869v18.9a1.449,1.449,0,0,0,.247.84.956.956,0,0,0,.789.411,1.425,1.425,0,0,0,.905-.382l5.717-4.854a1.132,1.132,0,0,1,1.388,0l5.7,4.853a1.375,1.375,0,0,0,.884.383c.5,0,.99-.387.99-1.251V1.869A1.89,1.89,0,0,0,40.754,0Z"
+                                              transform="translate(-26.022)"
+                                              fill="#14a800" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <h3 class="posts_feed--title card-title">
+                                @category.GetCategoryById(post.CategoryId).CategoryName
+                            </h3>
+                            <h6 class="posts_feed-subtitle card-subtitle text-muted mb-2">
+                                @post.Budget$ - @post.CreationDate
+                            </h6>
+                            <p class="posts_feed-description card-text col-9"> @post.Description </p>
+                            <div class="posts_feed--post_data">
+                                @if (proposalRepo.IsAlreadyApplied(@post.Id, @ViewBag.FreelancerId))
+                                {
+                                    <button class="btn btn-dark float-end">You Already Applied For This Job</button>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Freelancer" asp-action="ApplyForJob" asp-route-id="@post.Id"
+                                       class="posts_feed--post_link btn btn-primary float-end">Apply</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Posts -->

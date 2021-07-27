@@ -1,0 +1,29 @@
+﻿@model ProposalVM 
+@{
+    ViewBag.Title = "ApplyForJob";
+}
+ 
+<div class="apply_form mb-5">
+    <div class="container">
+        <div class="row">
+            <h4 class="h2 mb-4">@ViewBag.PostDescription</h4>
+            <form asp-controller="Freelancer" asp-action="ApplyForJob" method="post">
+                <input asp-for="PostId" type="hidden" value="@ViewBag.PostId" />
+                <input asp-for="FreelancerId" type="hidden" value="@ViewBag.FreelancerId" /> 
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="h5">Please write your proposal</label>
+                    <textarea asp-for="Description"
+                              type=""
+                              class="form-control"
+                              placeholder="Enter Your data"
+                              rows="30"
+                              cols="30"
+                              style="height: 200px"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary mt-5">Apply</button>
+            </form>
+        </div>
+    </div>
+</div> 

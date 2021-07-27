@@ -1,0 +1,173 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<Freelance_System.DAL.Entites.ApplicationUser> signInManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link href="~/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+<body>
+    <!-- Starting The Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+        <div class="container">
+            <a asp-controller="Home" asp-action="Index" class="navbar-brand">The Crackers</a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-flex text-capitalize">
+                <div class="collapse navbar-collapse d-flex" id="navbarNav">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <ul class="navbar-nav">
+                            @if (User.IsInRole("Freelancer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" asp-controller="Freelancer" asp-action="Index">Posts Wall</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link active" aria-current="page" asp-controller="Freelancer" asp-action="SavedPosts">Saved Posts</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link active" aria-current="page" asp-controller="Freelancer" asp-action="AcceptedProposals">Accepted Proposals</a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Home" asp-action="Profile" class="nav-link">Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Admin" asp-action="ManageUsers" class="nav-link">Users Page</a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a asp-controller="Admin" asp-action="PostsPage" class="nav-link">Posts Page</a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a asp-controller="Admin" asp-action="PostsRequests" class="nav-link">Posts Requests</a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a asp-controller="Admin" asp-action="CreateRole" class="nav-link">Create Role</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <div class="navbar__buttons">
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        <button type="submit"
+                                                class="btn btn-outline-primary me-2 Login">
+                                            Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End The Navigation bar -->
+    @if (User.IsInRole("Client") && signInManager.IsSignedIn(User))
+    {
+        <div class="client_data">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="client_data--client_links">
+                            <ul class="list-unstyled pt-5 pb-5">
+                                <li><a asp-controller="Home" asp-action="Profile">Profile</a></li>
+                                <li><a asp-controller="Client" asp-action="CreateNewPost">Create new post</a></li>
+                                <li><a asp-controller="Client" asp-action="Index">My posts</a></li>
+                                <li><a asp-controller="Client" asp-action="RecievedProposals">Received proposals</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        @RenderBody()
+    }
+    <!-- Start Footer -->
+    <footer>
+        <div class="footer__links text-center">
+            Follow us
+            <svg id="facebook-logo"
+                 xmlns="http://www.w3.org/2000/svg"
+                 width="20.539"
+                 height="20.539"
+                 viewBox="0 0 20.539 20.539">
+                <path id="Path_47"
+                      data-name="Path 47"
+                      d="M17.531,3.008A10.27,10.27,0,0,0,3.008,17.531,10.27,10.27,0,0,0,17.531,3.008Zm-.426,14.1a9.6,9.6,0,0,1-4.927,2.644V13.143h1.377a.622.622,0,0,0,.6-.471l.482-1.929a.622.622,0,0,0-.6-.773H11.878a.3.3,0,0,0,0,.6h2.161a.021.021,0,0,1,.02.026l-.482,1.929a.021.021,0,0,1-.02.016H11.878a.3.3,0,0,0-.3.3V19.85a9.828,9.828,0,0,1-1.307.088,9.668,9.668,0,0,1-6.836-16.5A9.668,9.668,0,0,1,17.106,17.106Z"
+                      fill="#fff" />
+                <path id="Path_48"
+                      data-name="Path 48"
+                      d="M152.63,96.193H150.7a3.843,3.843,0,0,0-3.838,3.838V102.3h-1.95a.623.623,0,0,0-.622.622v1.929a.623.623,0,0,0,.622.622h1.95v5.487a.3.3,0,1,0,.6,0v-5.788a.3.3,0,0,0-.3-.3h-2.251a.021.021,0,0,1-.021-.021v-1.929a.021.021,0,0,1,.021-.021h2.251a.3.3,0,0,0,.3-.3v-2.573a3.24,3.24,0,0,1,3.236-3.236h1.929a.021.021,0,0,1,.021.021v1.929a.021.021,0,0,1-.021.021h-1.286a1.267,1.267,0,0,0-1.266,1.266v1.286a.3.3,0,0,0,.6,0v-1.286a.665.665,0,0,1,.664-.664h1.286a.623.623,0,0,0,.622-.622V96.815A.623.623,0,0,0,152.63,96.193Z"
+                      transform="translate(-138.502 -92.334)"
+                      fill="#fff" />
+            </svg>
+            <svg id="twitter"
+                 xmlns="http://www.w3.org/2000/svg"
+                 width="20.032"
+                 height="20.032"
+                 viewBox="0 0 20.032 20.032">
+                <g id="Group_16" data-name="Group 16" transform="translate(0 0)">
+                    <g id="Group_15" data-name="Group 15">
+                        <path id="Path_49"
+                              data-name="Path 49"
+                              d="M17.1,2.934A10.016,10.016,0,1,0,2.934,17.1,10.016,10.016,0,1,0,17.1,2.934ZM10.016,19.4A9.383,9.383,0,1,1,19.4,10.016,9.394,9.394,0,0,1,10.016,19.4Z"
+                              transform="translate(0 0)"
+                              fill="#fff" />
+                    </g>
+                </g>
+                <g id="Group_18"
+                   data-name="Group 18"
+                   transform="translate(4.115 5.061)">
+                    <g id="Group_17" data-name="Group 17">
+                        <path id="Path_50"
+                              data-name="Path 50"
+                              d="M118.134,130.64a.325.325,0,0,0-.347-.043,4.919,4.919,0,0,1-.5.2,2.882,2.882,0,0,0,.4-.76.328.328,0,0,0-.061-.33.316.316,0,0,0-.39-.061,4.553,4.553,0,0,1-1.484.533,3.166,3.166,0,0,0-5.293,2.067,11.02,11.02,0,0,1-1.171-.3,7.1,7.1,0,0,1-3.016-2.007.328.328,0,0,0-.184-.108.317.317,0,0,0-.342.17,2.92,2.92,0,0,0,.247,3.009.317.317,0,0,0-.306.113.326.326,0,0,0-.069.194c0,.032,0,.064,0,.1a2.731,2.731,0,0,0,1.023,2.136.318.318,0,0,0-.106.121.324.324,0,0,0-.017.242,2.8,2.8,0,0,0,1.811,1.83,4.948,4.948,0,0,1-2.57.721c-.08,0-.163,0-.246-.006a.317.317,0,0,0-.328.264.325.325,0,0,0,.16.33,7.593,7.593,0,0,0,8.294-.389.319.319,0,0,0,.038-.484h0a.32.32,0,0,0-.415-.031,6.944,6.944,0,0,1-6.542.865,5.577,5.577,0,0,0,2.6-1.2.325.325,0,0,0,.115-.31.316.316,0,0,0-.3-.256,2.172,2.172,0,0,1-1.827-1.1,3.025,3.025,0,0,0,.526-.072.327.327,0,0,0,.257-.27.316.316,0,0,0-.238-.348,2.1,2.1,0,0,1-1.57-1.692,2.888,2.888,0,0,0,.745.074.316.316,0,0,0,.3-.28.326.326,0,0,0-.159-.312,2.284,2.284,0,0,1-1.022-2.522,7.73,7.73,0,0,0,2.938,1.82,8.5,8.5,0,0,0,1.512.344l.156.006a.316.316,0,0,0,.33-.329c0-.018,0-.037,0-.055a2.534,2.534,0,0,1,4.34-1.777.313.313,0,0,0,.266.092,5.208,5.208,0,0,0,.94-.22,2.264,2.264,0,0,1-.567.45.318.318,0,0,0-.138.407l0,.01a.316.316,0,0,0,.318.185,5.589,5.589,0,0,0,.773-.129,5.107,5.107,0,0,1-.737.628.315.315,0,0,0-.134.269v.02c0,.022,0,.043,0,.065v.029a6.925,6.925,0,0,1-1.787,4.617.319.319,0,0,0,.477.424,7.533,7.533,0,0,0,1.942-5,5.7,5.7,0,0,0,1.417-1.53A.316.316,0,0,0,118.134,130.64Z"
+                              transform="translate(-105.176 -129.347)"
+                              fill="#fff" />
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <hr class="mb-2 mt-2" />
+        <div class="copyright text-center mx-5">
+            @@2021-2021 The Crackers Corp.
+        </div>
+    </footer>
+    <!-- End Footer -->
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/font-awesome/js/all.min.js"></script>
+    <script src="~/jquery/jquery.js"></script>
+    <script src="~/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/main.js"></script>
+
+
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", required: true)
+    }
+</body>
+</html>
+

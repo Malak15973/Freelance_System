@@ -1,0 +1,28 @@
+﻿@model LoginVM 
+@{
+    ViewBag.Title = "Login Form";
+}
+
+<div class="LoginForm">
+    <div class="container">
+        <div class="row">
+            <h3 class="h2 LoginForm--title text-center mb-5">
+                Login to your account
+            </h3>
+            <form asp-controller="Account" asp-action="Login" method="post" class="LoginForm--mainform offset-3 col-6">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <label asp-for="UserName">Enter your Username</label>
+                <input asp-for="UserName" type="text" class="form-control mb-2" />
+                <label asp-for="Password">Enter your Password</label>
+                <input asp-for="Password" type="password" class="form-control mb-2" />
+                <input asp-for="RemeberMe" type="checkbox" />
+                <label asp-for="RemeberMe">Remember Me?</label><br />
+                <a asp-controller="Account" asp-action="Register" class="text-decoration-underline">Don't have an account</a><br />
+                <a asp-controller="Account" asp-action="ForgetPassword" class="text-decoration-underline">Forget Password</a> 
+                <button type="submit" class="btn btn-primary mb-3 mt-3 d-block">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

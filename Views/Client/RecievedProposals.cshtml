@@ -1,0 +1,52 @@
+﻿@model IQueryable<ProposalVM>
+@inject IProposalRepository proposalRepo
+@inject UserManager<ApplicationUser> userManager
+@{
+    ViewBag.Title  = "RecievedProposals";
+}
+
+<div class="col-md-10 p-5">
+    <h2 class="h1 mb-5 custom_color--main-color">
+        Your Received Proposals
+    </h2>
+
+    @foreach (var proposal in Model)
+    {
+        <div class="client_proposal--post mt-5 mb-5 card">
+            <div class="card-body">
+                <div class="client_proposals--header d-flex">
+                    <h3 class="client_proposal--title card-title flex-grow-1">
+                        @{
+                            var user = await userManager.FindByIdAsync(@proposal.FreelancerId);
+                            @user.UserName
+                         } 
+                    </h3>
+                    <h6 class="client_proposal--subtitle card-subtitle text-muted lh-base me-5">
+                        @proposal.CreationDate
+                    </h6>
+                     
+                </div>
+                <p class="client_proposal--description card-text col-9">
+                    @proposal.Description
+                </p>
+                <div class="client_proposal--post_data d-flex flex-row">
+                    @if (proposalRepo.IsThisClientProposalAccepted(proposal.Id))
+                    {
+                        <a  class="btn btn-dark me-2">Already Accepted</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Client" asp-action="AcceptProposal" asp-route-ProposalId="@proposal.Id"
+                           class="client_proposal--post_link btn custom_btn--main_color btn-primary me-2">Accept</a>
+                        <a asp-controller="Client" asp-action="RefuseProposal" asp-route-ProposalId="@proposal.Id"
+                           class="client_proposal--post_link btn btn-danger custom_btn--danger justify-content-end">Refuse</a>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+    }
+
+</div>
+

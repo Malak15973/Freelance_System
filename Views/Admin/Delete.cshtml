@@ -1,0 +1,28 @@
+﻿@model ManageUserVM
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="RegisterForm">
+    <div class="container">
+        <div class="row">
+            <h3 style="color:red" class="h2 RegisterForm--title text-center mb-5">
+                Are You Sure You Want To Delete This User?
+            </h3>
+
+            <form asp-controller="Admin" asp-action="Delete" method="post" class="RegisterForm--mainform offset-3 col-6">
+                <label asp-for="Name">Username</label>
+                <input asp-for="Name" type="text" readonly class="form-control mb-2" />
+                <label asp-for="Email">Your Email</label>
+                <input asp-for="Email" readonly type="text" class="form-control mb-2" />
+                <label asp-for="Number">Number</label>
+                <input asp-for="Number" readonly type="text" class="form-control mb-2" />
+                <label asp-for="RoleName">RoleName</label>
+                <input asp-for="RoleName" readonly type="text" class="form-control mb-2" />
+                <button type="submit" style="background-color:red" class="btn btn-danger mb-3 mt-3 d-block">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

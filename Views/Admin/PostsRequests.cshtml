@@ -1,0 +1,49 @@
+﻿@model IQueryable<PostVM> 
+@{
+    ViewBag.Title = "PostsRequests";
+}
+ 
+    <!-- Start Users Table -->
+    <section class="posts_table">
+        <div class="container">
+            <div class="row">
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Project Title</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Total Budget</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var post in Model)
+                    {
+                        <tr class="p-5">
+                            <th scope="row">@post.Description</th>
+                            <td>@post.ClientName</td>
+                            <td>@post.CategoryName</td>
+                            <td>@post.Budget</td>
+                            <td>
+                                <a asp-controller="Admin" asp-action="EditPost" asp-route-id="@post.Id" class="btn btn-outline-info me-2 rounded-pill ps-4 pe-4">
+                                    Edit
+                                </a>
+                                <a asp-controller="Admin" asp-action="DeletePost" asp-route-id="@post.Id" class="btn btn-outline-danger rounded-pill ps-4 pe-4">
+                                    Delete
+                                </a>
+                                <form asp-controller="Admin" asp-action="AcceptPost"  asp-route-id="@post.Id" style="display:inline" method="post">
+                                    <button type="submit" class="btn btn-outline-success rounded-pill ps-4 pe-4">
+                                        Accept
+                                    </button>
+                                </form> 
+                            </td>
+                        </tr> 
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!-- End Users Table -->
+  

@@ -1,0 +1,85 @@
+﻿@model ProfileVM
+@{
+    ViewBag.Title = "Profile";
+}
+
+
+
+<!-- Start Client Data -->
+
+@{
+    if (User.IsInRole("Admin"))
+    {
+    <div class="client_data">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="client_data--client_img">
+                        @{
+                            if (Model.PhotoName != null)
+                            {
+                                <img src="~/Files/Photos/@Model.PhotoName" alt="client_image" />
+                            }
+                            else
+                            {
+                                <img src="~/imgs/profile_pic.jpg" alt="client_image" />
+                            }
+                        }
+                    </div>
+                    <div class="client_data--client_info">
+                        <ul class="list-unstyled">
+                            <li>
+                                <span class="text-decoration_none">Your name : @Model.Name </span>
+                            </li>
+                            <li>
+                                <span class="text-decoration_none">Your Email : @Model.Email  </span>
+                            </li>
+                            <li>
+                                <span class="text-decoration_none">Your Number : @Model.Number </span>
+                            </li>
+                        </ul>
+                        <form asp-controller="Home" asp-action="Edit" method="get">
+                            <button type="submit" class="btn client_data--edit_btn">Edit your data</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    }
+    else
+    {
+        <div class="col-md-10">
+            <div class="client_data--client_img">
+                @{
+                    if (Model.PhotoName != null)
+                    {
+                        <img src="~/Files/Photos/@Model.PhotoName" alt="client_image" />
+                    }
+                    else
+                    {
+                        <img src="~/imgs/profile_pic.jpg" alt="client_image" />
+                    }
+                }
+            </div>
+            <div class="client_data--client_info">
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="text-decoration_none">Your name : @Model.Name </span>
+                    </li>
+                    <li>
+                        <span class="text-decoration_none">Your Email : @Model.Email  </span>
+                    </li>
+                    <li>
+                        <span class="text-decoration_none">Your Number : @Model.Number </span>
+                    </li>
+                </ul>
+                <form asp-controller="Home" asp-action="Edit" method="get">
+                    <button type="submit" class="btn client_data--edit_btn">Edit your data</button>
+                </form>
+            </div>
+        </div>
+
+    }
+} 

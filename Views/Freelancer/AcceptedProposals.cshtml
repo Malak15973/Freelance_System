@@ -1,0 +1,29 @@
+﻿@model Task<IQueryable<PostVM>> 
+@{
+    ViewBag.Title = "Accepted Proposals";
+}
+
+<!-- Start Posts -->
+
+<section class="freelance_posts">
+    <div class="container">
+        @foreach (var post in await Model)
+        {
+            <div class="posts_feed--post card">
+                <div class="card-body">
+                    <h3 class="posts_feed--title card-title">
+                        @post.CategoryName
+                    </h3>
+                    <h6 class="posts_feed-subtitle card-subtitle text-muted mb-2">
+                        @post.ClientName - @post.Budget$ - @post.CreationDate
+                    </h6>
+                    <p class="posts_feed-description card-text col-9">
+                        @post.Description
+                    </p>
+                </div>
+            </div>
+
+        }
+    </div>
+</section>
+<!-- End Posts -->

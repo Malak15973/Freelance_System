@@ -1,0 +1,64 @@
+﻿@model IQueryable<PostVM>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="col-md-10 p-5">
+    <h2 class="h1 mb-5 custom_color--main-color">Your Posts</h2>
+
+    @foreach (var post in Model)
+    {
+        <div class="client_proposal--post mt-5 mb-5 card">
+            <div class="card-body">
+                <div class="client_proposals--header d-flex">
+                    <h3 class="client_proposal--title card-title flex-grow-1">
+                        @post.CategoryName
+                    </h3>
+                    <div class="client_data--saving">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="28"
+                             height="4"
+                             viewBox="0 0 28 4">
+                            <g id="Group_105"
+                               data-name="Group 105"
+                               transform="translate(-1432 -587)">
+                                <circle id="Ellipse_18"
+                                        data-name="Ellipse 18"
+                                        cx="2"
+                                        cy="2"
+                                        r="2"
+                                        transform="translate(1456 587)"
+                                        fill="#001e00" />
+                                <circle id="Ellipse_19"
+                                        data-name="Ellipse 19"
+                                        cx="2"
+                                        cy="2"
+                                        r="2"
+                                        transform="translate(1444 587)"
+                                        fill="#001e00" />
+                                <circle id="Ellipse_20"
+                                        data-name="Ellipse 20"
+                                        cx="2"
+                                        cy="2"
+                                        r="2"
+                                        transform="translate(1432 587)"
+                                        fill="#001e00" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <h6 class="client_proposal--subtitle card-subtitle text-muted me-5">
+                    @post.CreationDate
+                </h6>
+                <p class="client_proposal--description card-text col-9">
+                    @post.Description
+                </p>
+                <div class="client_proposal--post_data d-flex flex-row">
+                    <p class="client_proposal--pudget flex-grow-1">@post.Budget$</p>
+                </div>
+            </div>
+        </div>
+
+    }
+
+</div>

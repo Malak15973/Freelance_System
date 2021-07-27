@@ -1,0 +1,347 @@
+﻿@model IQueryable<PostVM>
+
+@inject IProposalRepository proposalRepo
+
+@inject IRateRepository RateRepository
+
+@inject ISavedPostsRepository SavedRepo
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<!-- Start Posts -->
+
+<section class="freelance_posts">
+    <div class="container">
+        <div class="row">
+        </div>
+
+        <div class="posts_feed">
+            <div class="row">
+                <h3 class="h1 posts_feed--main-title mt-4 mb-5">Jobs</h3>
+                @if (Model != null)
+                {
+                    @foreach (var post in Model)
+                    {
+                        <div class="posts_feed--post card">
+                            <div class="card-body">
+                                <div class="posts_feed--saving float-end">
+                                    <a asp-controller="Freelancer" asp-action="SavePost" asp-route-id="@post.Id">
+                                        @if (SavedRepo.IsFreelancerSavePost(post.Id, ViewBag.FreelancerId) == false)
+                                        {
+
+
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="15.01"
+                                                 height="24.016"
+                                                 viewBox="0 0 15.01 24.016">
+                                                <g id="bookmark" transform="translate(-96)">
+                                                    <g id="Group_56"
+                                                       data-name="Group 56"
+                                                       transform="translate(96)">
+                                                        <path id="Path_52"
+                                                              data-name="Path 52"
+                                                              d="M108.508,0H98.5A2.5,2.5,0,0,0,96,2.5V23.515a.5.5,0,0,0,.855.353l6.65-6.65,6.65,6.651a.5.5,0,0,0,.354.146.493.493,0,0,0,.191-.038.5.5,0,0,0,.309-.462V2.5A2.505,2.505,0,0,0,108.508,0Zm1.5,22.307-6.15-6.15a.5.5,0,0,0-.708,0L97,22.308V2.5A1.5,1.5,0,0,1,98.5,1h10.007a1.5,1.5,0,0,1,1.5,1.5v19.8Z"
+                                                              transform="translate(-96)"
+                                                              fill="#14a800" />
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                        }
+                                        else
+                                        {
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="16.617"
+                                                 height="22.023"
+                                                 viewBox="0 0 16.617 22.023">
+                                                <path id="bookmark_filled"
+                                                      d="M40.754,0H27.976a1.952,1.952,0,0,0-1.954,1.869v18.9a1.449,1.449,0,0,0,.247.84.956.956,0,0,0,.789.411,1.425,1.425,0,0,0,.905-.382l5.717-4.854a1.132,1.132,0,0,1,1.388,0l5.7,4.853a1.375,1.375,0,0,0,.884.383c.5,0,.99-.387.99-1.251V1.869A1.89,1.89,0,0,0,40.754,0Z"
+                                                      transform="translate(-26.022)"
+                                                      fill="#14a800" />
+                                            </svg>
+                                        }
+                                    </a>
+                                </div>
+                                <h3 class="posts_feed--title card-title">
+                                    @post.CategoryName
+                                </h3>
+                                <h6 class="posts_feed-subtitle card-subtitle text-muted mb-2">
+                                    @post.Budget$ - @post.CreationDate
+
+                                </h6>
+                                <div id="totalRate_@post.Id">
+                                    <p>total rate Is : @RateRepository.GetPostTotalRate(@post.Id) star</p>
+                                </div>
+                                <p class="posts_feed-description card-text col-9">
+                                    @post.Description
+                                </p>
+                                <div class="posts_feed--post_data">
+                                    @if (proposalRepo.IsAlreadyApplied(@post.Id, @ViewBag.FreelancerId))
+                                    {
+                                        <button class="btn btn-dark float-end">You Already Applied For This Job</button>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Freelancer" asp-action="ApplyForJob" asp-route-id="@post.Id"
+                                           class="posts_feed--post_link btn btn-primary float-end">Apply</a>
+                                    }
+                                </div>
+                                <div>
+                                    @{
+                                        if (ViewData[$"{post.Id}"].ToString() == "0")
+                                        {
+                                            <span id="st1_@post.Id" class="fa fa-star"></span>
+                                            <span id="st2_@post.Id" class="fa fa-star"></span>
+                                            <span id="st3_@post.Id" class="fa fa-star"></span>
+                                            <span id="st4_@post.Id" class="fa fa-star"></span>
+                                            <span id="st5_@post.Id" class="fa fa-star"></span>
+                                        }
+                                        else if (ViewData[$"{post.Id}"].ToString() == "1")
+                                        {
+                                            <span id="st1_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st2_@post.Id" class="fa fa-star"></span>
+                                            <span id="st3_@post.Id" class="fa fa-star"></span>
+                                            <span id="st4_@post.Id" class="fa fa-star"></span>
+                                            <span id="st5_@post.Id" class="fa fa-star"></span>
+                                        }
+                                        else if (ViewData[$"{post.Id}"].ToString() == "2")
+                                        {
+                                            <span id="st1_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st2_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st3_@post.Id" class="fa fa-star"></span>
+                                            <span id="st4_@post.Id" class="fa fa-star"></span>
+                                            <span id="st5_@post.Id" class="fa fa-star"></span>
+                                        }
+                                        else if (ViewData[$"{post.Id}"].ToString() == "3")
+                                        {
+                                            <span id="st1_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st2_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st3_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st4_@post.Id" class="fa fa-star"></span>
+                                            <span id="st5_@post.Id" class="fa fa-star"></span>
+                                        }
+                                        else if (ViewData[$"{post.Id}"].ToString() == "4")
+                                        {
+                                            <span id="st1_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st2_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st3_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st4_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st5_@post.Id" class="fa fa-star"></span>
+                                        }
+                                        else if (ViewData[$"{post.Id}"].ToString() == "5")
+                                        {
+                                            <span id="st1_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st2_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st3_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st4_@post.Id" class="fa fa-star checked"></span>
+                                            <span id="st5_@post.Id" class="fa fa-star checked"></span>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <script src="~/jquery/jquery.js"></script>
+                        <script>
+
+                            $(function () {
+                                $(document).on("click", "#st1_" + @post.Id, function () {
+                                    $("#st1_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st2_" + @post.Id).attr("class", "fa fa-star");
+                                    $("#st3_" + @post.Id).attr("class", "fa fa-star");
+                                    $("#st4_" + @post.Id).attr("class", "fa fa-star");
+                                    $("#st5_" + @post.Id).attr("class", "fa fa-star");
+                                    if (@ViewData[$"{post.Id}"].ToString() == "0") {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/RatePost",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 1,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        } else {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/UpdateRate",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 1,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        }
+
+                                    });
+                                $(document).on("click","#st2_" + @post.Id,function () {
+                                    $("#st1_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st2_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st3_" + @post.Id).attr("class", "fa fa-star");
+                                    $("#st4_" + @post.Id).attr("class", "fa fa-star");
+                                    $("#st5_" + @post.Id).attr("class", "fa fa-star");
+                                        if (@ViewData[$"{post.Id}"].ToString() == "0") {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/RatePost",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 2,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        } else {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/UpdateRate",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 2,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        }
+                                    });
+                                $(document).on("click","#st3_" + @post.Id, function () {
+                                    $("#st1_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st2_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st3_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st4_" + @post.Id).attr("class", "fa fa-star");
+                                    $("#st5_" + @post.Id).attr("class", "fa fa-star");
+                                        if (@ViewData[$"{post.Id}"].ToString() == "0") {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/RatePost",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 3,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        } else {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/UpdateRate",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 3,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        }
+                                    });
+                                $(document).on("click","#st4_" + @post.Id,function () {
+                                    $("#st1_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st2_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st3_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st4_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st5_" + @post.Id).attr("class", "fa fa-star");
+                                        if (@ViewData[$"{post.Id}"].ToString() == "0") {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/RatePost",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 4,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        } else {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/UpdateRate",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 4,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        }
+                                    });
+                                $(document).on("click", "#st5_" + @post.Id, function () {
+                                    $("#st1_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st2_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st3_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st4_" + @post.Id).attr("class", "fa fa-star checked");
+                                    $("#st5_" + @post.Id).attr("class", "fa fa-star checked");
+                                        if (@ViewData[$"{post.Id}"].ToString() == "0") {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/RatePost",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 5,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        } else {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Freelancer/UpdateRate",
+                                            data: {
+                                                FreelancerId: "@ViewBag.FreelancerId",
+                                                Rate: 5,
+                                                PostId: "@post.Id"
+                                            },
+                                            success: function (res) {
+                                                $("#totalRate_" +@post.Id).empty();
+                                                $("#totalRate_" +@post.Id).append("<p>total rate is : "+ res+" star" +"</p>");
+                                                },
+                                        });
+                                        }
+                                    });
+                                });
+                        </script>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Posts -->

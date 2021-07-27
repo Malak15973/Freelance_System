@@ -1,0 +1,32 @@
+﻿@model RegisterVM 
+@{
+    ViewBag.Title = "Register Form";
+}
+
+<div class="RegisterForm">
+    <div class="container">
+        <div class="row">
+            <h3 class="h2 RegisterForm--title text-center mb-5">
+                Register and join to us!
+            </h3>
+
+            <form asp-controller="Account" asp-action="Register" method="post" class="RegisterForm--mainform offset-3 col-6">
+                <div asp-validation-summary="All" asp class="text-danger"></div><br />
+                <label asp-for="UserName">Username</label>
+                <input asp-for="UserName" type="text" class="form-control mb-2" />
+                <span asp-validation-for="UserName" class="text-danger"></span><br />
+                <label asp-for="Email">Your Email</label>
+                <input asp-for="Email" type="text" class="form-control mb-2" />
+                <span asp-validation-for="Email" class="text-danger"></span><br />
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" class="form-control mb-2" />
+                <span asp-validation-for="Password" class="text-danger"></span><br />
+                <select asp-for="RoleId" asp-items="@(SelectList)ViewBag.RolesList"> </select>
+                <button type="submit" class="btn btn-primary mb-3 mt-3 d-block">
+                    Register
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
