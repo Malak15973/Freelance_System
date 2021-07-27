@@ -4,14 +4,16 @@ using Freelance_System.DAL.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Freelance_System.Migrations
 {
     [DbContext(typeof(DbContainer))]
-    partial class DbContainerModelSnapshot : ModelSnapshot
+    [Migration("20210727185351_Cascade")]
+    partial class Cascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,8 +371,7 @@ namespace Freelance_System.Migrations
                 {
                     b.HasOne("Freelance_System.DAL.Entites.ApplicationUser", "Freelancer")
                         .WithMany("Proposal")
-                        .HasForeignKey("FreelancerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FreelancerId");
 
                     b.HasOne("Freelance_System.DAL.Entites.Post", "Post")
                         .WithMany("Proposal")

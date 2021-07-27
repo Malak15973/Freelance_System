@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DAL\Database\" />
     <Folder Include="wwwroot\Files\Photos\" />
   </ItemGroup>
 
