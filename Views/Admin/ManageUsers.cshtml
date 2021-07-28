@@ -44,7 +44,7 @@
                     {
 
                         <tr class="p-5">
-                            <th scope="row">@user.Name</th>
+                            <th scope="row">@user.UserName</th>
                             <td>@user.Email</td>
                             <td>@user.Number</td>
                             <td>@ViewBag.Roles[i]</td>
@@ -82,7 +82,7 @@
                             console.log(e);
                             $("tbody").append(
                                 "<tr class='p-5'>" +
-                                "<th scope='row'>" + e.name + "</th> \n" +
+                                "<th scope='row'>" + e.userName + "</th> \n" +
                                 "<td>" + e.email + "</td>" +
                                 "<td>" + e.number + "</td> \n" +
                                 "<td>" + e.roleName + "</td> \n" +
@@ -98,8 +98,6 @@
                     }
 
                 });
-
-
         });
     });
 </script>

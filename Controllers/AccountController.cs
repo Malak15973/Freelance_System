@@ -27,18 +27,6 @@ namespace Freelance_System.Controllers
         }
         public IActionResult Login()
         {
-            if (User.IsInRole("Admin"))
-            {
-                return RedirectToAction("Profile", "Home");
-            }
-            else if (User.IsInRole("Client"))
-            {
-                return RedirectToAction("Index", "Client");
-            }
-            else if (User.IsInRole("Freelancer"))
-            {
-                return RedirectToAction("Index", "Freelancer");
-            }
             return View();
         }
         
@@ -94,23 +82,31 @@ namespace Freelance_System.Controllers
                     UserName = model.UserName,
                     Email = model.Email,
                 };
-                var result = await userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                { 
-                    var role = await roleManager.FindByIdAsync(model.RoleId);
-                    await userManager.AddToRoleAsync(user, role.Name);
-                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var ConfirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token },Request.Scheme);
-                    logger.Log(LogLevel.Warning, ConfirmationLink);
-                    return RedirectToAction("Login");
+                if(await userManager.FindByEmailAsync(model.Email) == null)
+                {
+                    var result = await userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        var role = await roleManager.FindByIdAsync(model.RoleId);
+                        await userManager.AddToRoleAsync(user, role.Name);
+                        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var ConfirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+                        logger.Log(LogLevel.Warning, ConfirmationLink);
+                        return RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                    ModelState.AddModelError("", $"Email {model.Email} Is Already In Use");
                 }
+
             }
             return View(model);
         }
@@ -194,6 +190,29 @@ namespace Freelance_System.Controllers
             return View(model);
         }
         
-         
+        public async Task<JsonResult> IsUserNameInUse(string UserName)
+        {
+            var result = await userManager.FindByNameAsync(UserName);
+            if (result == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Name {UserName} Is In Use");
+            }
+        }
+        public async Task<JsonResult> IsEmailInUse(string Email)
+        {
+            var result = await userManager.FindByEmailAsync(Email);
+            if (result == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {Email} Is In Use");
+            }
+        }
     }
 }

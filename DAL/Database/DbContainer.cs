@@ -55,6 +55,7 @@ namespace Freelance_System.DAL.Database
                 .WithMany(r => r.Proposal)
                 .HasForeignKey(r => r.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

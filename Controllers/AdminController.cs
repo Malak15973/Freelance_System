@@ -70,7 +70,7 @@ namespace Freelance_System.Controllers
                 res.Add(RoleName);
             }
             ViewBag.Roles = res.ToArray();
-            var users = data.Select(u => new ManageUserVM { Id = u.Id, Name = u.UserName, Email = u.Email, Number = u.PhoneNumber });
+            var users = data.Select(u => new ManageUserVM { Id = u.Id, UserName = u.UserName, Email = u.Email, Number = u.PhoneNumber });
 
             return View(users);
         }
@@ -82,7 +82,7 @@ namespace Freelance_System.Controllers
             ManageUserVM manageUserVM = new ManageUserVM()
             {
                 Id = user.Id,
-                Name = user.UserName,
+                UserName = user.UserName,
                 Email = user.Email,
                 Number = user.PhoneNumber,
                 RoleName = r.Id
@@ -97,8 +97,7 @@ namespace Freelance_System.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await userManager.FindByIdAsync(model.Id);
-                user.UserName = model.Name;
-                user.Email = model.Email;
+                user.UserName = model.UserName;
                 user.PhoneNumber = model.Number;
                 var NewRole = await roleManager.FindByIdAsync(model.RoleName);
                 var OldRole = await userManager.GetRolesAsync(user);
@@ -127,7 +126,7 @@ namespace Freelance_System.Controllers
             ManageUserVM manageUserVM = new ManageUserVM()
             {
                 Id = user.Id,
-                Name = user.UserName,
+                UserName = user.UserName,
                 Email = user.Email,
                 Number = user.PhoneNumber,
                 RoleName = Role.FirstOrDefault()
@@ -232,11 +231,11 @@ namespace Freelance_System.Controllers
             {
                 var Role = await userManager.GetRolesAsync(user);
                 if (searchKey == null || searchKey == "") { 
-                    result.Add(new ManageUserVM { Id = user.Id, Name = user.UserName, Email = user.Email, Number = user.PhoneNumber, RoleName = Role.FirstOrDefault() }); 
+                    result.Add(new ManageUserVM { Id = user.Id, UserName = user.UserName, Email = user.Email, Number = user.PhoneNumber, RoleName = Role.FirstOrDefault() }); 
                 } 
                 else if (user.UserName.Contains(searchKey) || user.Email.Contains(searchKey) || user.PhoneNumber.Contains(searchKey) || Role.FirstOrDefault().Contains(searchKey))
                 {
-                    result.Add(new ManageUserVM { Id = user.Id, Name = user.UserName, Email = user.Email, Number = user.PhoneNumber, RoleName = Role.FirstOrDefault() });
+                    result.Add(new ManageUserVM { Id = user.Id, UserName = user.UserName, Email = user.Email, Number = user.PhoneNumber, RoleName = Role.FirstOrDefault() });
                 }
             }
             return Json(result);

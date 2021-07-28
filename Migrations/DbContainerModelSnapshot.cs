@@ -358,7 +358,8 @@ namespace Freelance_System.Migrations
 
                     b.HasOne("Freelance_System.DAL.Entites.ApplicationUser", "Client")
                         .WithMany("Posts")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Categories");
 

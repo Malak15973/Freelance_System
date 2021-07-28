@@ -4,6 +4,7 @@ using Freelance_System.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO; 
@@ -16,10 +17,12 @@ namespace Freelance_System.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<HomeController> logger;
 
-        public HomeController(UserManager<ApplicationUser> userManager)
+        public HomeController(UserManager<ApplicationUser> userManager, ILogger<HomeController> logger)
         {
             this.userManager = userManager;
+            this.logger = logger;
         } 
         [Authorize(Roles = "Admin,Client")]
 
@@ -28,7 +31,7 @@ namespace Freelance_System.Controllers
             var user = await userManager.GetUserAsync(User);
             ProfileVM profile = new ProfileVM()
             {
-                Name = user.UserName,
+                UserName = user.UserName,
                 Email = user.Email,
                 Number = user.PhoneNumber,
                 PhotoName = user.PhotoPath
@@ -44,7 +47,7 @@ namespace Freelance_System.Controllers
             ProfileVM profile = new ProfileVM()
             {
                 Id = user.Id,
-                Name = user.UserName,
+                UserName = user.UserName,
                 Email = user.Email,
                 Number = user.PhoneNumber ,
                 PhotoName = user.PhotoPath 
@@ -77,12 +80,11 @@ namespace Freelance_System.Controllers
                 }
 
                 user.PhoneNumber = profile.Number;
-                user.UserName = profile.Name;
-                user.Email = profile.Email;
+                user.UserName = profile.UserName;
                 var result = await userManager.UpdateAsync(user);
                 if (result.Succeeded)
-                { 
-                    return RedirectToAction("Profile");
+                {  
+                   return RedirectToAction("Profile");
                 }
                 else
                 {
@@ -93,6 +95,19 @@ namespace Freelance_System.Controllers
                 }
             }
             return View(profile);
+        }
+
+        public async Task<JsonResult> IsUserNameInUse(string UserName)
+        {
+            var result = await userManager.FindByNameAsync(UserName); 
+            if (result == null||User.Identity.Name == UserName)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Name {UserName} Is In Use");
+            }
         }
     }
 }
