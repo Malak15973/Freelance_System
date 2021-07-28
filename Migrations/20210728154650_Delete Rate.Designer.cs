@@ -4,14 +4,16 @@ using Freelance_System.DAL.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Freelance_System.Migrations
 {
     [DbContext(typeof(DbContainer))]
-    partial class DbContainerModelSnapshot : ModelSnapshot
+    [Migration("20210728154650_Delete Rate")]
+    partial class DeleteRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,24 +170,6 @@ namespace Freelance_System.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Proposal");
-                });
-
-            modelBuilder.Entity("Freelance_System.DAL.Entites.Rate", b =>
-                {
-                    b.Property<string>("FreelancerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FreelancerRate")
-                        .HasColumnType("int");
-
-                    b.HasKey("FreelancerId", "PostId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Rate");
                 });
 
             modelBuilder.Entity("Freelance_System.DAL.Entites.SavedPosts", b =>
@@ -376,25 +360,6 @@ namespace Freelance_System.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("Freelance_System.DAL.Entites.Rate", b =>
-                {
-                    b.HasOne("Freelance_System.DAL.Entites.ApplicationUser", "Freelancer")
-                        .WithMany("Rate")
-                        .HasForeignKey("FreelancerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Freelance_System.DAL.Entites.Post", "Post")
-                        .WithMany("Rate")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Freelancer");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("Freelance_System.DAL.Entites.SavedPosts", b =>
                 {
                     b.HasOne("Freelance_System.DAL.Entites.ApplicationUser", "Freelancer")
@@ -470,8 +435,6 @@ namespace Freelance_System.Migrations
 
                     b.Navigation("Proposal");
 
-                    b.Navigation("Rate");
-
                     b.Navigation("SavedPosts");
                 });
 
@@ -483,8 +446,6 @@ namespace Freelance_System.Migrations
             modelBuilder.Entity("Freelance_System.DAL.Entites.Post", b =>
                 {
                     b.Navigation("Proposal");
-
-                    b.Navigation("Rate");
 
                     b.Navigation("SavedPosts");
                 });

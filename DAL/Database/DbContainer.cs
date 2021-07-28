@@ -56,6 +56,7 @@ namespace Freelance_System.DAL.Database
                 .HasForeignKey(r => r.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Rate>().HasKey(r => new { r.FreelancerId, r.PostId });
         }
     }
 }

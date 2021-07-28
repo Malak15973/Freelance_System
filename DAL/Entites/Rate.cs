@@ -10,15 +10,13 @@ namespace Freelance_System.DAL.Entites
     [Table("Rate")]
     public class Rate
     {
-        [Key]
-        public int Id { get; set; }
         public string FreelancerId { get; set; }
-        [ForeignKey("FreelancerId")] 
+        [ForeignKey("FreelancerId")]
         public ApplicationUser Freelancer { get; set; }
         public int PostId { get; set; }
         [ForeignKey("PostId")]
         public Post Post { get; set; }
-        [Range(0,5)]
+        [Range(0, 5)]
         public int FreelancerRate { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace Freelance_System.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IRateRepository rateRepository;
 
-        public FreelancerController(IPostRepository post,IProposalRepository proposal,ISavedPostsRepository savedPostsRepository,UserManager<ApplicationUser> userManager,IRateRepository rateRepository)
+        public FreelancerController(IPostRepository post,IProposalRepository proposal,ISavedPostsRepository savedPostsRepository,UserManager<ApplicationUser> userManager, IRateRepository rateRepository)
         {
             this.post = post;
             this.proposal = proposal;
@@ -33,7 +33,7 @@ namespace Freelance_System.Controllers
             var data = post.GetAcceptedPosts();
             foreach (var post in data)
             {
-                ViewData[$"{post.Id}"] = rateRepository.GetFreelancerRateForPost(FreelancerId,post.Id); 
+                ViewData[$"{post.Id}"] = rateRepository.GetFreelancerRateForPost(FreelancerId, post.Id);
             } 
             return View(data);
         }

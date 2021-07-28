@@ -31,7 +31,7 @@ namespace Freelance_System.BL.Repository
 
         public int GetFreelancerRateForPost(string FreelancerId, int PostId)
         {
-            var result= db.Rate.Where(p => p.FreelancerId == FreelancerId && p.PostId == PostId).FirstOrDefault();
+            var result = db.Rate.Where(p => p.FreelancerId == FreelancerId && p.PostId == PostId).FirstOrDefault();
             if (result != null)
             {
                 return result.FreelancerRate;
@@ -42,14 +42,14 @@ namespace Freelance_System.BL.Repository
         public double GetPostTotalRate(int PostId)
         {
             double result = 0.0;
-            var posts =  db.Rate.Where(r => r.PostId == PostId);
+            var posts = db.Rate.Where(r => r.PostId == PostId);
             foreach (var post in posts)
             {
                 result += post.FreelancerRate;
             }
             if (result != 0.0)
             {
-                result /=posts.Count();
+                result /= posts.Count();
             }
             return result;
         }

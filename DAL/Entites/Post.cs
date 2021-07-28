@@ -27,7 +27,7 @@ namespace Freelance_System.DAL.Entites
         public Category Categories { get; set; }
 
         public virtual ICollection<SavedPosts> SavedPosts { get; set; }
-        public virtual ICollection<Proposal> Proposal { get; set; }  
+        public virtual ICollection<Proposal> Proposal { get; set; }
         public virtual ICollection<Rate> Rate { get; set; }
 
 
