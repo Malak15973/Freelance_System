@@ -1,6 +1,5 @@
 ﻿using Freelance_System.Model;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Freelance_System.BL.Interface
 {
@@ -12,7 +11,7 @@ namespace Freelance_System.BL.Interface
         public void AcceptProposal(int ProposalId);
         public void RefuseProposal(int ProposalId);
         public bool IsThisClientProposalAccepted(int ProposalId);
-        public Task<IQueryable<PostVM>> GetFreelancerAcceptedProposals(string FreelancerId);
+        public IQueryable<PostVM> GetFreelancerAcceptedProposals(string FreelancerId);
 
     }
 }

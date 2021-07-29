@@ -1,4 +1,4 @@
-﻿@model Task<IQueryable<PostVM>> 
+﻿@model IQueryable<PostVM> 
 @{
     ViewBag.Title = "Accepted Proposals";
 }
@@ -7,7 +7,7 @@
 
 <section class="freelance_posts">
     <div class="container">
-        @foreach (var post in await Model)
+        @foreach (var post in Model)
         {
             <div class="posts_feed--post card">
                 <div class="card-body">

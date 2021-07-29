@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Freelance_System.DAL.Entites
 {
@@ -29,7 +27,5 @@ namespace Freelance_System.DAL.Entites
         public virtual ICollection<SavedPosts> SavedPosts { get; set; }
         public virtual ICollection<Proposal> Proposal { get; set; }
         public virtual ICollection<Rate> Rate { get; set; }
-
-
     }
 }

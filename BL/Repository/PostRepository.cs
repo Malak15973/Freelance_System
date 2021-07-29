@@ -3,7 +3,6 @@ using Freelance_System.DAL.Database;
 using Freelance_System.DAL.Entites;
 using Freelance_System.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Freelance_System.BL.Repository

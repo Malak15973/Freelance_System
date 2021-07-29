@@ -1,5 +1,4 @@
-﻿using Freelance_System.DAL.Entites;
-using Freelance_System.Model;
+﻿using Freelance_System.Model;
 using System.Linq;
 
 namespace Freelance_System.BL.Interface

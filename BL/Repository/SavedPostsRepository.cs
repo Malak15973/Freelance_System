@@ -3,7 +3,6 @@ using Freelance_System.DAL.Database;
 using Freelance_System.DAL.Entites;
 using Freelance_System.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Freelance_System.BL.Repository
@@ -11,12 +10,10 @@ namespace Freelance_System.BL.Repository
     public class SavedPostsRepository : ISavedPostsRepository
     {
         private readonly DbContainer db;
-        private readonly IPostRepository postRepository;
 
-        public SavedPostsRepository(DbContainer db, IPostRepository postRepository)
+        public SavedPostsRepository(DbContainer db)
         {
             this.db = db;
-            this.postRepository = postRepository;
         }
         public void SavePost(SavePostVM savePost)
         {

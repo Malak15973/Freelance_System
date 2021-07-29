@@ -2,28 +2,19 @@
 using Freelance_System.DAL.Database;
 using Freelance_System.DAL.Entites;
 using Freelance_System.Model;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Freelance_System.BL.Repository
 {
     public class ProposalRepository : IProposalRepository
     {
         private readonly DbContainer db;
-        private readonly IPostRepository postRepo;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly ICategoryRepository categoryRepository;
-
-        public ProposalRepository(DbContainer db,IPostRepository postRepo,UserManager<ApplicationUser> userManager,ICategoryRepository categoryRepository)
+        public ProposalRepository(DbContainer db)
         {
             this.db = db;
-            this.postRepo = postRepo;
-            this.userManager = userManager;
-            this.categoryRepository = categoryRepository;
         }
         public void ApplyForJob(ProposalVM proposal)
         {
@@ -54,16 +45,13 @@ namespace Freelance_System.BL.Repository
         public IQueryable<ProposalVM> GetClientProposals(string ClientId)
         {
             List<ProposalVM> result = new List<ProposalVM>();
-            var posts = postRepo.GetClientPosts(ClientId);
-            var proposals = db.Proposal.Select(p => new ProposalVM { Id = p.Id, CreationDate = p.CreationDate, Description = p.Description, FreelancerId = p.FreelancerId, IsAccepted = p.IsAccepted, PostId = p.PostId });
-            foreach (var proposal in proposals)
+
+            var client = db.Users.Where(u => u.Id == ClientId).Include(u => u.Posts).ThenInclude(p => p.Proposal).FirstOrDefault();
+            foreach (var post in client.Posts)
             {
-                foreach (var post in posts)
+                foreach (var proposal in post.Proposal)
                 {
-                    if (proposal.PostId == post.Id)
-                    {
-                        result.Add(proposal);
-                    }
+                    result.Add(new ProposalVM { Id=proposal.Id,CreationDate= proposal.CreationDate,Description= proposal.Description,FreelancerId= proposal.FreelancerId,IsAccepted= proposal.IsAccepted,PostId= proposal.PostId});
                 }
             }
             return result.AsQueryable();
@@ -71,7 +59,7 @@ namespace Freelance_System.BL.Repository
 
         public void AcceptProposal(int ProposalId)
         {
-            var proposal = db.Proposal.Where(p => p.Id == ProposalId).FirstOrDefault();
+            var proposal = GetProposalById(ProposalId);
             proposal.IsAccepted = true;
             db.Entry(proposal).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             db.SaveChanges();
@@ -79,33 +67,33 @@ namespace Freelance_System.BL.Repository
 
         public void RefuseProposal(int ProposalId)
         {
-            var proposal = db.Proposal.Where(p => p.Id == ProposalId).FirstOrDefault();
+            var proposal = GetProposalById(ProposalId);
             db.Proposal.Remove(proposal);
             db.SaveChanges();
         }
 
         public bool IsThisClientProposalAccepted(int ProposalId)
         {
-            var proposal = db.Proposal.Where(p => p.Id == ProposalId).FirstOrDefault();
+            var proposal = GetProposalById(ProposalId);
             if (proposal.IsAccepted)
             {
                 return true;
             }
             return false;
         }
-
-        public async Task<IQueryable<PostVM>> GetFreelancerAcceptedProposals(string FreelancerId) 
+        public IQueryable<PostVM> GetFreelancerAcceptedProposals(string FreelancerId)
         {
-            List<PostVM> result = new List<PostVM>();
-            var AcceptedProposals = db.Proposal.Where(p => (p.FreelancerId == FreelancerId && p.IsAccepted == true)).Include(p=>p.Post);
-            foreach (var AcceptedProposal in AcceptedProposals)
-            {
-                var client = await userManager.FindByIdAsync(AcceptedProposal.Post.ClientId);
-                var ClientName = client.UserName;
-                var Category = categoryRepository.GetCategoryById(AcceptedProposal.Post.CategoryId);
-                result.Add(new PostVM {Id=AcceptedProposal.Post.Id , Budget = AcceptedProposal.Post.Budget,Description= AcceptedProposal.Post.Description,CategoryName=Category.CategoryName,ClientName=ClientName,CreationDate= AcceptedProposal.Post.CreationDate });
-            }
-            return result.AsQueryable();
+            var result = db.Proposal.
+                Where(proposal => (proposal.FreelancerId == FreelancerId && proposal.IsAccepted == true)).
+                Include(proposal => proposal.Post).
+                ThenInclude(post => post.Client).
+                Include(proposal => proposal.Post.Categories).
+                Select(p=>new PostVM {Id=p.Post.Id,Budget= p.Post.Budget,Description= p.Post.Description,CreationDate= p.Post.CreationDate,ClientName= p.Post.Client.UserName,CategoryName= p.Post.Categories.Name});
+           return result;
+        }
+        private Proposal GetProposalById(int ProposalId)
+        {
+            return db.Proposal.Where(p => p.Id == ProposalId).FirstOrDefault(); ;
         }
     }
 }
