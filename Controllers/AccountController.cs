@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,6 +25,18 @@ namespace Freelance_System.Controllers
         }
         public IActionResult Login()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Profile", "Home");
+            }
+            else if(User.IsInRole("Client"))
+            {
+                return RedirectToAction("Index", "Client");
+            }
+            else if (User.IsInRole("Freelancer"))
+            {
+                return RedirectToAction("Index", "Freelancer");
+            }
             return View();
         }
         

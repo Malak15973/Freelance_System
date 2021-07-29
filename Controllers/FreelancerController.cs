@@ -3,10 +3,6 @@ using Freelance_System.DAL.Entites;
 using Freelance_System.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Freelance_System.Controllers
 {

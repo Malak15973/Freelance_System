@@ -4,11 +4,8 @@ using Freelance_System.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO; 
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Freelance_System.Controllers
@@ -17,12 +14,10 @@ namespace Freelance_System.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILogger<HomeController> logger;
 
-        public HomeController(UserManager<ApplicationUser> userManager, ILogger<HomeController> logger)
+        public HomeController(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
-            this.logger = logger;
         } 
         [Authorize(Roles = "Admin,Client")]
 
