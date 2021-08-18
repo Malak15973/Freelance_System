@@ -27,10 +27,6 @@ namespace Freelance_System.Controllers
             var FreelancerId  = userManager.GetUserId(User);
             ViewBag.FreelancerId = FreelancerId;
             var data = post.GetAcceptedPosts();
-            foreach (var post in data)
-            {
-                ViewData[$"{post.Id}"] = rateRepository.GetFreelancerRateForPost(FreelancerId, post.Id);
-            } 
             return View(data);
         }
         public IActionResult SavePost(int id)
@@ -86,17 +82,17 @@ namespace Freelance_System.Controllers
         [HttpPost]
         public JsonResult RatePost(RateVM model)
         {
-            rateRepository.Add(model);
+            if (rateRepository.GetFreelancerRateForPost(model.FreelancerId, model.PostId) == 0)
+            {
+                rateRepository.Add(model);
+            }
+            else
+            {
+                rateRepository.Update(model);
+            }
             var totalRate = rateRepository.GetPostTotalRate(model.PostId);
             return Json(totalRate);
         }
-        [HttpPost]
-        public JsonResult UpdateRate(RateVM model)
-        {
-            rateRepository.Update(model);
-            var totalRate = rateRepository.GetPostTotalRate(model.PostId);
-            return Json(totalRate);
-        }
-
+        
     }
 }

@@ -24,4 +24,8 @@
     <Folder Include="wwwroot\Files\Photos\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Views\Shared\Components\Rate\Default.cshtml" />
+  </ItemGroup>
+
 </Project>
